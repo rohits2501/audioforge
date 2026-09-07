@@ -1,11 +1,18 @@
 import { existsSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
-import { episodeDir, episodeJsonPath, EPISODES_DIR, generationLogPath } from "../lib/paths";
-import type { EpisodeRecord, GenerationLog, LineStatus } from "../types";
+import { join } from "node:path";
+import {
+  episodeDir,
+  episodeJsonPath,
+  EPISODES_DIR,
+  FIXTURE_EPISODES_DIR,
+  generationLogPath,
+} from "../lib/paths";
+import type { EpisodeRecord, LineStatus } from "../types";
 
 export function saveEpisode(record: EpisodeRecord): EpisodeRecord {
-  episodeDir(record.id);
+  const dir = episodeDir(record.id);
   record.updatedAt = new Date().toISOString();
-  writeFileSync(episodeJsonPath(record.id), JSON.stringify(record, null, 2) + "\n");
+  writeFileSync(join(dir, "episode.json"), JSON.stringify(record, null, 2) + "\n");
   if (record.generation) {
     writeFileSync(generationLogPath(record.id), JSON.stringify(record.generation, null, 2) + "\n");
   }
@@ -18,13 +25,23 @@ export function loadEpisode(id: string): EpisodeRecord | null {
   return JSON.parse(readFileSync(path, "utf8")) as EpisodeRecord;
 }
 
-export function listEpisodes(): EpisodeRecord[] {
-  if (!existsSync(EPISODES_DIR)) return [];
-  return readdirSync(EPISODES_DIR, { withFileTypes: true })
+function listEpisodeIdsFrom(dir: string): string[] {
+  if (!existsSync(dir)) return [];
+  return readdirSync(dir, { withFileTypes: true })
     .filter((d) => d.isDirectory())
-    .map((d) => loadEpisode(d.name))
+    .map((d) => d.name);
+}
+
+export function listEpisodes(): EpisodeRecord[] {
+  const ids = new Set([...listEpisodeIdsFrom(FIXTURE_EPISODES_DIR), ...listEpisodeIdsFrom(EPISODES_DIR)]);
+  return [...ids]
+    .map((id) => loadEpisode(id))
     .filter((e): e is EpisodeRecord => e !== null)
-    .sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
+    .sort((a, b) => {
+      if (a.id === "rain-night") return -1;
+      if (b.id === "rain-night") return 1;
+      return b.updatedAt.localeCompare(a.updatedAt);
+    });
 }
 
 export function createEpisode(partial: {

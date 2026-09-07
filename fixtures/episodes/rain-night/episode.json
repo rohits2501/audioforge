@@ -1,0 +1,81 @@
+{
+  "id": "rain-night",
+  "title": "Rain night",
+  "language": "hi-IN",
+  "scriptText": "[SCENE: INT. HOUSE - NIGHT]\n[AMBIENCE: RAIN]\n\n[NARRATOR]\nबारिश बाहर गिर रही थी। घर के अंदर एक पुरानी घड़ी टिक टिक कर रही थी।\n\n[ARJUN]\nकौन है बाहर? इस वक्त?\n[EMOTION: tense]\n\n[MEERA]\nमैं हूँ, अर्जुन। दरवाज़ा खोलो।\n\n[SFX: DOOR_OPEN]\n\n[NARRATOR]\nदरवाज़ा धीरे से खुला। हवा के साथ बारिश का ठंडा पानी अंदर आया।\n\n[ARJUN]\nमीरा? तुम भीग गई हो। क्या हुआ?\n\n[MEERA]\nवो वापस आ गया है। मैंने उसे गली में देखा।\n\n[ARJUN]\nये मुमकिन नहीं। पुलिस ने कहा था वो शहर छोड़ चुका है।\n\n[MEERA]\nमैंने उसकी गाड़ी देखी, अर्जुन। वही लाल स्कूटर।\n\n[SFX: THUNDER]\n\n[NARRATOR]\nबाहर गड़गड़ाहट हुई। कमरे की रोशनी एक पल के लिए काँपी।\n\n[ARJUN]\nअंदर आओ। दरवाज़ा बंद करो। आज रात कोई बाहर नहीं जाएगा।\n",
+  "plan": {
+    "language": "hi-IN",
+    "characters": [
+      { "name": "NARRATOR", "role": "narrator" },
+      { "name": "ARJUN", "role": "speaker" },
+      { "name": "MEERA", "role": "speaker" }
+    ],
+    "scenes": [{ "index": 0, "heading": "INT. HOUSE - NIGHT", "ambience": "RAIN" }],
+    "lines": [
+      { "character": "NARRATOR", "text": "बारिश बाहर गिर रही थी। घर के अंदर एक पुरानी घड़ी टिक टिक कर रही थी।", "sceneIndex": 0, "order": 0 },
+      { "character": "ARJUN", "text": "कौन है बाहर? इस वक्त?", "sceneIndex": 0, "order": 1, "emotion": "tense" },
+      { "character": "MEERA", "text": "मैं हूँ, अर्जुन। दरवाज़ा खोलो।", "sceneIndex": 0, "order": 2 },
+      { "character": "NARRATOR", "text": "दरवाज़ा धीरे से खुला। हवा के साथ बारिश का ठंडा पानी अंदर आया।", "sceneIndex": 0, "order": 3 },
+      { "character": "ARJUN", "text": "मीरा? तुम भीग गई हो। क्या हुआ?", "sceneIndex": 0, "order": 4 },
+      { "character": "MEERA", "text": "वो वापस आ गया है। मैंने उसे गली में देखा।", "sceneIndex": 0, "order": 5 },
+      { "character": "ARJUN", "text": "ये मुमकिन नहीं। पुलिस ने कहा था वो शहर छोड़ चुका है।", "sceneIndex": 0, "order": 6 },
+      { "character": "MEERA", "text": "मैंने उसकी गाड़ी देखी, अर्जुन। वही लाल स्कूटर।", "sceneIndex": 0, "order": 7 },
+      { "character": "NARRATOR", "text": "बाहर गड़गड़ाहट हुई। कमरे की रोशनी एक पल के लिए काँपी।", "sceneIndex": 0, "order": 8 },
+      { "character": "ARJUN", "text": "अंदर आओ। दरवाज़ा बंद करो। आज रात कोई बाहर नहीं जाएगा।", "sceneIndex": 0, "order": 9 }
+    ],
+    "sfx": [
+      { "tag": "DOOR_OPEN", "sceneIndex": 0, "afterLineIndex": 2 },
+      { "tag": "THUNDER", "sceneIndex": 0, "afterLineIndex": 7 }
+    ]
+  },
+  "lineStatuses": {
+    "0": "generated",
+    "1": "generated",
+    "2": "generated",
+    "3": "generated",
+    "4": "generated",
+    "5": "generated",
+    "6": "generated",
+    "7": "generated",
+    "8": "generated",
+    "9": "generated"
+  },
+  "lineAudio": {
+    "0": "line_000.wav",
+    "1": "line_001.wav",
+    "2": "line_002.wav",
+    "3": "line_003.wav",
+    "4": "line_004.wav",
+    "5": "line_005.wav",
+    "6": "line_006.wav",
+    "7": "line_007.wav",
+    "8": "line_008.wav",
+    "9": "line_009.wav"
+  },
+  "generation": {
+    "episode": "rain-night",
+    "language": "hi-IN",
+    "provider": "sarvam",
+    "characters": ["NARRATOR", "ARJUN", "MEERA"],
+    "lines": [
+      { "order": 0, "character": "NARRATOR", "provider": "sarvam", "voice": "shubh", "language": "hi-IN", "characters": 67, "durationMs": 4011, "latencyMs": 1240, "costInr": 0.201 },
+      { "order": 1, "character": "ARJUN", "provider": "sarvam", "voice": "aditya", "language": "hi-IN", "characters": 21, "durationMs": 2304, "latencyMs": 787, "costInr": 0.063 },
+      { "order": 2, "character": "MEERA", "provider": "sarvam", "voice": "ritu", "language": "hi-IN", "characters": 30, "durationMs": 2389, "latencyMs": 776, "costInr": 0.09 },
+      { "order": 3, "character": "NARRATOR", "provider": "sarvam", "voice": "shubh", "language": "hi-IN", "characters": 61, "durationMs": 3413, "latencyMs": 1003, "costInr": 0.183 },
+      { "order": 4, "character": "ARJUN", "provider": "sarvam", "voice": "aditya", "language": "hi-IN", "characters": 30, "durationMs": 3157, "latencyMs": 946, "costInr": 0.09 },
+      { "order": 5, "character": "MEERA", "provider": "sarvam", "voice": "ritu", "language": "hi-IN", "characters": 41, "durationMs": 2987, "latencyMs": 891, "costInr": 0.123 },
+      { "order": 6, "character": "ARJUN", "provider": "sarvam", "voice": "aditya", "language": "hi-IN", "characters": 52, "durationMs": 3413, "latencyMs": 1031, "costInr": 0.156 },
+      { "order": 7, "character": "MEERA", "provider": "sarvam", "voice": "ritu", "language": "hi-IN", "characters": 46, "durationMs": 3157, "latencyMs": 898, "costInr": 0.138 },
+      { "order": 8, "character": "NARRATOR", "provider": "sarvam", "voice": "shubh", "language": "hi-IN", "characters": 53, "durationMs": 3072, "latencyMs": 909, "costInr": 0.159 },
+      { "order": 9, "character": "ARJUN", "provider": "sarvam", "voice": "aditya", "language": "hi-IN", "characters": 53, "durationMs": 3328, "latencyMs": 967, "costInr": 0.159 }
+    ],
+    "durationMs": 34382,
+    "latencyMs": 9448,
+    "costInr": 1.362,
+    "regenerations": 0,
+    "createdAt": "2026-09-07T15:01:36.282Z"
+  },
+  "createdAt": "2026-09-07T15:01:26.831Z",
+  "updatedAt": "2026-09-07T15:01:37.071Z",
+  "mixMp3": "episode.mp3"
+}

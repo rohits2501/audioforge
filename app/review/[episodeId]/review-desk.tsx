@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import type { EpisodeRecord, LineStatus } from "@/server/types";
 
@@ -16,10 +16,33 @@ function clock(ms: number): string {
   return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`;
 }
 
+function lineStarts(episode: EpisodeRecord): number[] {
+  let t = 0;
+  return episode.plan.lines.map((line) => {
+    const start = t;
+    const log = episode.generation?.lines.find((l) => l.order === line.order);
+    t += log?.durationMs ?? 2500;
+    if (episode.plan.sfx.some((s) => s.afterLineIndex === line.order)) t += 600;
+    return start;
+  });
+}
+
+function voicesFor(episode: EpisodeRecord): { character: string; voice: string }[] {
+  const seen = new Map<string, string>();
+  for (const line of episode.generation?.lines ?? []) {
+    if (!seen.has(line.character)) seen.set(line.character, line.voice);
+  }
+  return [...seen.entries()].map(([character, voice]) => ({ character, voice }));
+}
+
 export function ReviewDesk({ episode: initial }: { episode: EpisodeRecord }) {
   const [episode, setEpisode] = useState(initial);
   const [busy, setBusy] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [activeOrder, setActiveOrder] = useState<number | null>(null);
+  const mixRef = useRef<HTMLAudioElement | null>(null);
+  const starts = useMemo(() => lineStarts(episode), [episode]);
+  const voices = useMemo(() => voicesFor(episode), [episode]);
   const flagged = useMemo(
     () =>
       episode.plan.lines
@@ -59,16 +82,28 @@ export function ReviewDesk({ episode: initial }: { episode: EpisodeRecord }) {
   return (
     <main className="mx-auto max-w-5xl px-6 py-8">
       <Link href="/" className="text-sm text-[var(--muted)]">
-        ← Create Hindi episode
+        ← Use cases
       </Link>
       <header className="mt-4 flex flex-wrap items-end justify-between gap-4">
         <div>
-          <p className="mono text-xs uppercase tracking-widest text-[var(--muted)]">Review episode</p>
+          <p className="mono text-xs uppercase tracking-widest text-[var(--muted)]">Review desk</p>
           <h1 className="mt-1 text-3xl">{episode.title}</h1>
           <p className="mono mt-2 text-sm text-[var(--muted)]">
-            {episode.id} — Generation cost ₹{(g?.costInr ?? 0).toFixed(2)} — Audio{" "}
-            {clock(g?.durationMs ?? 0)} — Regenerations {g?.regenerations ?? 0}
+            ₹{(g?.costInr ?? 0).toFixed(2)} · {clock(g?.durationMs ?? 0)} · Regenerations{" "}
+            {g?.regenerations ?? 0}
           </p>
+          {voices.length > 0 && (
+            <div className="mt-3 flex flex-wrap gap-2">
+              {voices.map((v) => (
+                <span
+                  key={v.character}
+                  className="rounded-full border border-[var(--line)] px-2 py-1 text-xs"
+                >
+                  {v.character} → {v.voice}
+                </span>
+              ))}
+            </div>
+          )}
         </div>
         <div className="flex flex-wrap gap-2">
           <button
@@ -111,7 +146,20 @@ export function ReviewDesk({ episode: initial }: { episode: EpisodeRecord }) {
               Download MP3
             </a>
           </div>
-          <audio className="mt-3 w-full" controls src={`/api/audio/${episode.id}/episode.mp3`} />
+          <audio
+            ref={mixRef}
+            className="mt-3 w-full"
+            controls
+            src={`/api/audio/${episode.id}/episode.mp3`}
+            onTimeUpdate={(event) => {
+              const ms = event.currentTarget.currentTime * 1000;
+              let order = episode.plan.lines[0]?.order ?? null;
+              for (let i = 0; i < starts.length; i += 1) {
+                if (ms >= starts[i]!) order = episode.plan.lines[i]!.order;
+              }
+              setActiveOrder(order);
+            }}
+          />
         </section>
       )}
 
@@ -133,7 +181,19 @@ export function ReviewDesk({ episode: initial }: { episode: EpisodeRecord }) {
           return (
             <li
               key={line.order}
-              className="rounded-lg border border-[var(--line)] bg-[var(--panel)] px-4 py-3"
+              onClick={() => {
+                const start = starts[episode.plan.lines.findIndex((l) => l.order === line.order)];
+                if (mixRef.current && start != null) {
+                  mixRef.current.currentTime = start / 1000;
+                  void mixRef.current.play();
+                }
+                setActiveOrder(line.order);
+              }}
+              className={`cursor-pointer rounded-lg border bg-[var(--panel)] px-4 py-3 ${
+                activeOrder === line.order
+                  ? "border-[var(--accent)]"
+                  : "border-[var(--line)]"
+              }`}
             >
               <div className="flex flex-wrap items-start justify-between gap-3">
                 <div className="min-w-0 flex-1">
@@ -143,7 +203,10 @@ export function ReviewDesk({ episode: initial }: { episode: EpisodeRecord }) {
                   </p>
                   <p className="mt-1 leading-relaxed">{line.text}</p>
                 </div>
-                <div className="flex flex-wrap items-center gap-2">
+                <div
+                  className="flex flex-wrap items-center gap-2"
+                  onClick={(event) => event.stopPropagation()}
+                >
                   {episode.lineAudio[line.order] && (
                     <audio
                       controls

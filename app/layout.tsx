@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Script → Episode Engine",
-  description: "Upload a script → get a production-ready multi-character audio episode.",
+  title: "AudioForge",
+  description: "Script in. Hindi multi-character episode out.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
