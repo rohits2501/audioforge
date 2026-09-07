@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import Link from "next/link";
 import type { EpisodeRecord, LineStatus } from "@/server/types";
 
 function statusIcon(status: LineStatus): string {
@@ -57,9 +58,9 @@ export function ReviewDesk({ episode: initial }: { episode: EpisodeRecord }) {
 
   return (
     <main className="mx-auto max-w-5xl px-6 py-8">
-      <a href="/" className="text-sm text-[var(--muted)]">
+      <Link href="/" className="text-sm text-[var(--muted)]">
         ← Create Hindi episode
-      </a>
+      </Link>
       <header className="mt-4 flex flex-wrap items-end justify-between gap-4">
         <div>
           <p className="mono text-xs uppercase tracking-widest text-[var(--muted)]">Review episode</p>

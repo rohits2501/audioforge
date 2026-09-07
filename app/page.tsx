@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { listEpisodes } from "@/server/data/store";
 import { CreateEpisodeForm } from "./create-form";
 
@@ -22,7 +23,7 @@ export default function HomePage() {
           <ul className="mt-4 space-y-2">
             {episodes.map((ep) => (
               <li key={ep.id}>
-                <a
+                <Link
                   href={`/review/${ep.id}`}
                   className="block rounded-lg border border-[var(--line)] bg-[var(--panel)] px-4 py-3 hover:border-[var(--accent)]"
                 >
@@ -32,7 +33,7 @@ export default function HomePage() {
                       {ep.plan.lines.length} lines
                     </span>
                   </div>
-                </a>
+                </Link>
               </li>
             ))}
           </ul>
