@@ -1,0 +1,129 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// Postgres later: change provider to postgresql.
+// Skip User until Clerk. Series-level Character so Episode 2 reuses Arjun.
+
+model Project {
+  id          String      @id @default(cuid())
+  name        String
+  createdAt   DateTime    @default(now())
+  episodes    Episode[]
+  characters  Character[]
+}
+
+model Episode {
+  id          String          @id @default(cuid())
+  projectId   String
+  project     Project         @relation(fields: [projectId], references: [id])
+  title       String
+  language    String
+  scriptText  String
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+  scenes      Scene[]
+  lines       DialogueLine[]
+  sfxEvents   SfxEvent[]
+  assets      AudioAsset[]
+  jobs        GenerationJob[]
+  qaResults   QaResult[]
+}
+
+model Character {
+  id                String            @id @default(cuid())
+  projectId         String
+  project           Project           @relation(fields: [projectId], references: [id])
+  name              String
+  role              String
+  voiceAssignments  VoiceAssignment[]
+
+  @@unique([projectId, name])
+}
+
+model VoiceAssignment {
+  id              String    @id @default(cuid())
+  characterId     String
+  character       Character @relation(fields: [characterId], references: [id])
+  language        String
+  provider        String
+  providerVoiceId String
+
+  @@unique([characterId, language])
+}
+
+model Scene {
+  id        String  @id @default(cuid())
+  episodeId String
+  episode   Episode @relation(fields: [episodeId], references: [id])
+  index     Int
+  heading   String?
+  ambience  String?
+
+  @@unique([episodeId, index])
+}
+
+model DialogueLine {
+  id                  String  @id @default(cuid())
+  episodeId           String
+  episode             Episode @relation(fields: [episodeId], references: [id])
+  sceneIndex          Int
+  order               Int
+  character           String
+  text                String
+  emotion             String?
+  pronunciationHints  String?
+  pace                Float?
+  intensity           Float?
+  status              String  @default("pending")
+  audioPath           String?
+
+  @@unique([episodeId, order])
+}
+
+model SfxEvent {
+  id             String  @id @default(cuid())
+  episodeId      String
+  episode        Episode @relation(fields: [episodeId], references: [id])
+  tag            String
+  sceneIndex     Int
+  afterLineIndex Int
+}
+
+model AudioAsset {
+  id          String  @id @default(cuid())
+  episodeId   String
+  episode     Episode @relation(fields: [episodeId], references: [id])
+  kind        String
+  path        String
+  durationMs  Int     @default(0)
+}
+
+model GenerationJob {
+  id          String   @id @default(cuid())
+  episodeId   String
+  episode     Episode  @relation(fields: [episodeId], references: [id])
+  provider    String
+  chars       Int
+  durationMs  Int
+  latencyMs   Int
+  costInr     Float
+  voice       String
+  language    String
+  error       String?
+  createdAt   DateTime @default(now())
+}
+
+model QaResult {
+  id        String  @id @default(cuid())
+  episodeId String
+  episode   Episode @relation(fields: [episodeId], references: [id])
+  lineOrder Int
+  passed    Boolean
+  checks    String
+}

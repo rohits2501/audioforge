@@ -1,0 +1,20 @@
+[
+  {
+    "character": "NARRATOR",
+    "language": "hi-IN",
+    "provider": "sarvam",
+    "providerVoiceId": "shubh"
+  },
+  {
+    "character": "ARJUN",
+    "language": "hi-IN",
+    "provider": "sarvam",
+    "providerVoiceId": "aditya"
+  },
+  {
+    "character": "MEERA",
+    "language": "hi-IN",
+    "provider": "sarvam",
+    "providerVoiceId": "ritu"
+  }
+]

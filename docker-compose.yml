@@ -1,0 +1,15 @@
+# Optional. Local experiment uses SQLite via Prisma.
+# Swap prisma/schema.prisma provider to postgresql and use this when you outgrow the file DB.
+services:
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: audioforge
+      POSTGRES_PASSWORD: audioforge
+      POSTGRES_DB: audioforge
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+volumes:
+  pgdata:

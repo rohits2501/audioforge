@@ -1,0 +1,16 @@
+node_modules
+.next
+out
+dist
+*.log
+.env
+.env.local
+.DS_Store
+data/episodes
+data/dev.db
+data/dev.db-journal
+prisma/*.db
+prisma/*.db-journal
+
+# Keep generated SFX (small, needed to mix)
+# data/voices.json is committed as the default character map
