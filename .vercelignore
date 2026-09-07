@@ -1,0 +1,7 @@
+data/episodes
+data/dev.db
+data/dev.db-journal
+.next
+node_modules
+.env
+.env.local
