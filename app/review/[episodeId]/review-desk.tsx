@@ -3,6 +3,7 @@
 import { useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import type { EpisodeRecord, LineStatus } from "@/server/types";
+import { useOptionalOnboarding } from "../../onboarding/provider";
 
 function statusIcon(status: LineStatus): string {
   if (status === "approved") return "✓";
@@ -40,6 +41,7 @@ export function ReviewDesk({ episode: initial }: { episode: EpisodeRecord }) {
   const [busy, setBusy] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [activeOrder, setActiveOrder] = useState<number | null>(null);
+  const onboarding = useOptionalOnboarding();
   const mixRef = useRef<HTMLAudioElement | null>(null);
   const starts = useMemo(() => lineStarts(episode), [episode]);
   const voices = useMemo(() => voicesFor(episode), [episode]);
@@ -107,6 +109,7 @@ export function ReviewDesk({ episode: initial }: { episode: EpisodeRecord }) {
         </div>
         <div className="flex flex-wrap gap-2">
           <button
+            data-tour="generate"
             disabled={!!busy}
             onClick={() => run(`/api/episodes/${episode.id}/generate`, undefined, "generating")}
             className="rounded-md bg-[var(--accent)] px-3 py-2 text-black disabled:opacity-50"
@@ -135,7 +138,10 @@ export function ReviewDesk({ episode: initial }: { episode: EpisodeRecord }) {
       {error && <p className="mt-4 text-[var(--bad)]">{error}</p>}
 
       {episode.mixMp3 && (
-        <section className="mt-8 rounded-lg border border-[var(--line)] bg-[var(--panel)] p-4">
+        <section
+          data-tour="mix-player"
+          className="mt-8 rounded-lg border border-[var(--line)] bg-[var(--panel)] p-4"
+        >
           <div className="flex items-center justify-between gap-4">
             <p className="text-sm text-[var(--muted)]">Final mix</p>
             <a
@@ -181,6 +187,7 @@ export function ReviewDesk({ episode: initial }: { episode: EpisodeRecord }) {
           return (
             <li
               key={line.order}
+              data-tour={line.order === episode.plan.lines[0]?.order ? "line-0" : undefined}
               onClick={() => {
                 const start = starts[episode.plan.lines.findIndex((l) => l.order === line.order)];
                 if (mixRef.current && start != null) {
@@ -188,6 +195,9 @@ export function ReviewDesk({ episode: initial }: { episode: EpisodeRecord }) {
                   void mixRef.current.play();
                 }
                 setActiveOrder(line.order);
+                if (line.order === episode.plan.lines[0]?.order) {
+                  onboarding?.completeAction("line");
+                }
               }}
               className={`cursor-pointer rounded-lg border bg-[var(--panel)] px-4 py-3 ${
                 activeOrder === line.order
@@ -204,6 +214,7 @@ export function ReviewDesk({ episode: initial }: { episode: EpisodeRecord }) {
                   <p className="mt-1 leading-relaxed">{line.text}</p>
                 </div>
                 <div
+                  data-tour={line.order === episode.plan.lines[0]?.order ? "line-actions" : undefined}
                   className="flex flex-wrap items-center gap-2"
                   onClick={(event) => event.stopPropagation()}
                 >
@@ -216,33 +227,36 @@ export function ReviewDesk({ episode: initial }: { episode: EpisodeRecord }) {
                   )}
                   <button
                     disabled={!!busy}
-                    onClick={() =>
-                      run(
+                    onClick={() => {
+                      onboarding?.completeAction("qa");
+                      void run(
                         `/api/episodes/${episode.id}/regenerate`,
                         { orders: [line.order] },
                         `regen-${line.order}`,
-                      )
-                    }
+                      );
+                    }}
                     className="rounded border border-[var(--line)] px-2 py-1 text-sm"
                   >
                     Regenerate
                   </button>
                   <button
                     disabled={!!busy}
-                    onClick={() =>
-                      run(`/api/episodes/${episode.id}/lines/${line.order}`, {
+                    onClick={() => {
+                      onboarding?.completeAction("qa");
+                      void run(`/api/episodes/${episode.id}/lines/${line.order}`, {
                         status: "needs_regeneration",
-                      })
-                    }
+                      });
+                    }}
                     className="rounded border border-[var(--line)] px-2 py-1 text-sm"
                   >
                     Flag
                   </button>
                   <button
                     disabled={!!busy}
-                    onClick={() =>
-                      run(`/api/episodes/${episode.id}/lines/${line.order}`, { status: "approved" })
-                    }
+                    onClick={() => {
+                      onboarding?.completeAction("qa");
+                      void run(`/api/episodes/${episode.id}/lines/${line.order}`, { status: "approved" });
+                    }}
                     className="rounded border border-[var(--ok)] px-2 py-1 text-sm text-[var(--ok)]"
                   >
                     Approve

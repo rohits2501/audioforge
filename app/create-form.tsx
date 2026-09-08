@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { USE_CASES, type UseCaseId } from "@/lib/use-cases";
 import { parseCanonicalScript } from "@/server/pipeline/parse";
+import { useOptionalOnboarding } from "./onboarding/provider";
 
 function tryParse(script: string) {
   try {
@@ -15,6 +16,7 @@ function tryParse(script: string) {
 
 export function CreateEpisodeForm() {
   const router = useRouter();
+  const onboarding = useOptionalOnboarding();
   const [active, setActive] = useState<UseCaseId>("night-scene");
   const selected = USE_CASES.find((c) => c.id === active)!;
   const [title, setTitle] = useState(selected.episodeTitle);
@@ -30,6 +32,7 @@ export function CreateEpisodeForm() {
     setTitle(next.episodeTitle);
     setScript(next.script);
     setError(null);
+    onboarding?.completeAction("use-case");
   }
 
   async function onSubmit(event: React.FormEvent) {
@@ -56,7 +59,7 @@ export function CreateEpisodeForm() {
     <form onSubmit={onSubmit} className="mt-8 space-y-6">
       <div>
         <p className="text-sm uppercase tracking-widest text-[var(--muted)]">Use case</p>
-        <div className="mt-3 grid gap-3 sm:grid-cols-3">
+        <div data-tour="use-cases" className="mt-3 grid gap-3 sm:grid-cols-3">
           {USE_CASES.map((useCase) => {
             const on = useCase.id === active;
             return (
@@ -100,7 +103,10 @@ export function CreateEpisodeForm() {
           </label>
         </div>
 
-        <aside className="rounded-lg border border-[var(--line)] bg-[var(--panel)] p-4 h-fit">
+        <aside
+          data-tour="parse-panel"
+          className="h-fit rounded-lg border border-[var(--line)] bg-[var(--panel)] p-4"
+        >
           <p className="mono text-xs uppercase tracking-widest text-[var(--muted)]">Parse</p>
           {parsed ? (
             <>

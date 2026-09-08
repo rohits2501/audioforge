@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { listEpisodes } from "@/server/data/store";
 import { CreateEpisodeForm } from "./create-form";
+import { DemoPlayer, OpenDeskLink } from "./demo-player";
 
 export const dynamic = "force-dynamic";
 
@@ -37,14 +38,9 @@ export default function HomePage() {
                 {demo.plan.lines.length} lines · {demo.plan.characters.length} voices
               </p>
             </div>
-            <Link
-              href={`/review/${demo.id}`}
-              className="rounded-md bg-[var(--accent)] px-3 py-2 text-sm text-black"
-            >
-              Open review desk
-            </Link>
+            <OpenDeskLink href={`/review/${demo.id}`}>Open review desk</OpenDeskLink>
           </div>
-          <audio className="mt-4 w-full" controls src={`/api/audio/${demo.id}/episode.mp3`} />
+          <DemoPlayer src={`/api/audio/${demo.id}/episode.mp3`} />
         </section>
       )}
 
