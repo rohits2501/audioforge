@@ -21,7 +21,8 @@
     "test:parser": "tsx scripts/test-parser.ts",
     "db:sync": "tsx scripts/sync-prisma.ts",
     "db:push": "prisma db push",
-    "db:generate": "prisma generate"
+    "db:generate": "prisma generate",
+    "check:colors": "house-check-raw-color app lib server scripts"
   },
   "dependencies": {
     "@house/react": "file:vendor/house-react-0.1.0.tgz",
