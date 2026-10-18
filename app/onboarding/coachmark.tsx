@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { Button, Surface } from "@house/react";
 import { StepBadge } from "./badge";
 import { useOnboarding } from "./provider";
 
@@ -59,7 +60,7 @@ export function OnboardingCoachmark() {
           left: hole.left,
           width: hole.width,
           height: hole.height,
-          boxShadow: "0 0 0 9999px rgba(0,0,0,0.55)",
+          boxShadow: "0 0 0 9999px var(--scrim)",
         }}
       />
       <div
@@ -68,8 +69,9 @@ export function OnboardingCoachmark() {
       >
         <StepBadge index={index} total={total} />
       </div>
-      <div
-        className="pointer-events-auto absolute w-[min(20rem,calc(100vw-2rem))] rounded-lg border border-[var(--line)] bg-[var(--panel)] p-4"
+      <Surface
+        raised
+        className="pointer-events-auto absolute w-[min(20rem,calc(100vw-2rem))]"
         style={{
           top: tipTop,
           left: Math.min(hole.left, window.innerWidth - 336),
@@ -79,7 +81,7 @@ export function OnboardingCoachmark() {
           <StepBadge index={index} total={total} />
         </div>
         <p className="mt-2 text-sm">{step.title}</p>
-        <p className="mt-1 text-sm text-[var(--muted)]">{step.body}</p>
+        <p className="mt-1 text-sm text-[var(--text-muted)]">{step.body}</p>
         {step.cheat && (
           <ul className="mono mt-3 space-y-1 text-xs text-[var(--accent)]">
             {step.cheat.map((line) => (
@@ -89,23 +91,15 @@ export function OnboardingCoachmark() {
         )}
         <div className="mt-3 flex gap-2">
           {index > 1 && (
-            <button
-              type="button"
-              onClick={back}
-              className="rounded border border-[var(--line)] px-2 py-1 text-sm"
-            >
+            <Button size="sm" onClick={back}>
               Back
-            </button>
+            </Button>
           )}
-          <button
-            type="button"
-            onClick={next}
-            className="rounded-md bg-[var(--accent)] px-3 py-1 text-sm text-black"
-          >
+          <Button size="sm" variant="primary" onClick={next}>
             Next
-          </button>
+          </Button>
         </div>
-      </div>
+      </Surface>
     </div>
   );
 }

@@ -1,22 +1,16 @@
 @import "tailwindcss";
 
+/* Colors come from @house/tokens. AudioForge keeps its editorial serif. */
 :root {
-  --bg: #0f1115;
-  --panel: #171a21;
-  --line: #2a2f3a;
-  --text: #ece8df;
-  --muted: #9a9386;
-  --ok: #7dcea0;
-  --warn: #e6b566;
-  --bad: #e07a6b;
-  --accent: #d4a574;
+  --font-sans: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+  --scrim: color-mix(in srgb, var(--bg) 72%, transparent);
 }
 
 html,
 body {
   background: var(--bg);
   color: var(--text);
-  font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+  font-family: var(--font-sans);
 }
 
 body {
@@ -29,5 +23,5 @@ button {
 
 code,
 .mono {
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-family: var(--font-mono);
 }

@@ -18,22 +18,22 @@ export default function HomePage() {
 
   return (
     <main className="mx-auto max-w-3xl px-6 py-12">
-      <p className="mono text-xs tracking-widest text-[var(--muted)] uppercase">AudioForge</p>
+      <p className="mono text-xs tracking-widest text-[var(--text-muted)] uppercase">AudioForge</p>
       <h1 className="mt-3 text-4xl leading-tight">Script in. Episode out.</h1>
-      <p className="mt-3 max-w-xl text-[var(--muted)]">
+      <p className="mt-3 max-w-xl text-[var(--text-muted)]">
         Hindi multi-character audio from a canonical script. Listen first. Then try a
         use case.
       </p>
 
       {demo && (
-        <section className="mt-10 rounded-lg border border-[var(--accent)] bg-[var(--panel)] p-5">
+        <section className="mt-10 rounded-lg border border-[var(--accent)] bg-[var(--surface)] p-5">
           <div className="flex flex-wrap items-end justify-between gap-3">
             <div>
-              <p className="mono text-xs uppercase tracking-widest text-[var(--muted)]">
+              <p className="mono text-xs uppercase tracking-widest text-[var(--text-muted)]">
                 Seeded demo
               </p>
               <h2 className="mt-1 text-2xl">{demo.title}</h2>
-              <p className="mono mt-2 text-sm text-[var(--muted)]">
+              <p className="mono mt-2 text-sm text-[var(--text-muted)]">
                 ₹{(g?.costInr ?? 0).toFixed(2)} · {clock(g?.durationMs ?? 0)} ·{" "}
                 {demo.plan.lines.length} lines · {demo.plan.characters.length} voices
               </p>
@@ -46,7 +46,7 @@ export default function HomePage() {
 
       <section className="mt-14">
         <h2 className="text-2xl">Try a use case</h2>
-        <p className="mt-2 text-[var(--muted)]">
+        <p className="mt-2 text-[var(--text-muted)]">
           Pick one, watch the parse, then open the desk. Generate lives on the next
           screen.
         </p>
@@ -55,17 +55,17 @@ export default function HomePage() {
 
       {others.length > 0 && (
         <section className="mt-12">
-          <h2 className="text-sm uppercase tracking-widest text-[var(--muted)]">Recent</h2>
+          <h2 className="text-sm uppercase tracking-widest text-[var(--text-muted)]">Recent</h2>
           <ul className="mt-4 space-y-2">
             {others.map((ep) => (
               <li key={ep.id}>
                 <Link
                   href={`/review/${ep.id}`}
-                  className="block rounded-lg border border-[var(--line)] bg-[var(--panel)] px-4 py-3 hover:border-[var(--accent)]"
+                  className="block rounded-lg border border-[var(--border)] bg-[var(--surface)] px-4 py-3 hover:border-[var(--accent)]"
                 >
                   <div className="flex justify-between gap-4">
                     <span>{ep.title}</span>
-                    <span className="mono text-sm text-[var(--muted)]">
+                    <span className="mono text-sm text-[var(--text-muted)]">
                       {ep.plan.lines.length} lines
                     </span>
                   </div>

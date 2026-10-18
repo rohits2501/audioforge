@@ -87,7 +87,8 @@ Default routing (not intelligent): Indic languages → Sarvam `bulbul:v3`. Engli
 
 ## Stack (grows only when the audio works)
 
-- Next.js App Router + TypeScript + Tailwind
+- Next.js App Router + TypeScript + Tailwind for layout
+- House design system (`@house/tokens`, `@house/react`, vendored in `vendor/`) for color, type, and controls; `npm run check:colors` fails on raw colors
 - Local JSON + wavs on disk, then Prisma (SQLite locally; Postgres when you need it)
 - FFmpeg via `ffmpeg-static` (system `ffmpeg` used if on PATH)
 - Sarvam first. ElevenLabs TTS only, as a week-4 benchmark. No Music API.

@@ -2,6 +2,7 @@
 
 import { useMemo, useRef, useState } from "react";
 import Link from "next/link";
+import { Button, Surface, Text } from "@house/react";
 import type { EpisodeRecord, LineStatus } from "@/server/types";
 import { useOptionalOnboarding } from "../../onboarding/provider";
 
@@ -83,14 +84,14 @@ export function ReviewDesk({ episode: initial }: { episode: EpisodeRecord }) {
 
   return (
     <main className="mx-auto max-w-5xl px-6 py-8">
-      <Link href="/" className="text-sm text-[var(--muted)]">
+      <Link href="/" className="text-sm text-[var(--text-muted)]">
         ← Use cases
       </Link>
       <header className="mt-4 flex flex-wrap items-end justify-between gap-4">
         <div>
-          <p className="mono text-xs uppercase tracking-widest text-[var(--muted)]">Review desk</p>
+          <p className="mono text-xs uppercase tracking-widest text-[var(--text-muted)]">Review desk</p>
           <h1 className="mt-1 text-3xl">{episode.title}</h1>
-          <p className="mono mt-2 text-sm text-[var(--muted)]">
+          <p className="mono mt-2 text-sm text-[var(--text-muted)]">
             ₹{(g?.costInr ?? 0).toFixed(2)} · {clock(g?.durationMs ?? 0)} · Regenerations{" "}
             {g?.regenerations ?? 0}
           </p>
@@ -99,7 +100,7 @@ export function ReviewDesk({ episode: initial }: { episode: EpisodeRecord }) {
               {voices.map((v) => (
                 <span
                   key={v.character}
-                  className="rounded-full border border-[var(--line)] px-2 py-1 text-xs"
+                  className="rounded-full border border-[var(--border)] px-2 py-1 text-xs"
                 >
                   {v.character} → {v.voice}
                 </span>
@@ -108,42 +109,41 @@ export function ReviewDesk({ episode: initial }: { episode: EpisodeRecord }) {
           )}
         </div>
         <div className="flex flex-wrap gap-2">
-          <button
+          <Button
+            variant="primary"
             data-tour="generate"
             disabled={!!busy}
             onClick={() => run(`/api/episodes/${episode.id}/generate`, undefined, "generating")}
-            className="rounded-md bg-[var(--accent)] px-3 py-2 text-black disabled:opacity-50"
           >
             {busy === "generating" ? "Generating…" : "Generate"}
-          </button>
-          <button
+          </Button>
+          <Button
             disabled={!!busy || flagged.length === 0}
             onClick={() =>
               run(`/api/episodes/${episode.id}/regenerate`, { orders: flagged }, "regen-flagged")
             }
-            className="rounded-md border border-[var(--line)] px-3 py-2 disabled:opacity-40"
           >
             Regenerate flagged ({flagged.length})
-          </button>
-          <button
+          </Button>
+          <Button
             disabled={!!busy}
             onClick={() => run(`/api/episodes/${episode.id}/mix`, undefined, "mixing")}
-            className="rounded-md border border-[var(--line)] px-3 py-2 disabled:opacity-40"
           >
             {busy === "mixing" ? "Mixing…" : "Remix"}
-          </button>
+          </Button>
         </div>
       </header>
 
-      {error && <p className="mt-4 text-[var(--bad)]">{error}</p>}
+      {error && (
+        <Text as="p" status="danger" className="mt-4">
+          {error}
+        </Text>
+      )}
 
       {episode.mixMp3 && (
-        <section
-          data-tour="mix-player"
-          className="mt-8 rounded-lg border border-[var(--line)] bg-[var(--panel)] p-4"
-        >
+        <Surface as="section" data-tour="mix-player" className="mt-8">
           <div className="flex items-center justify-between gap-4">
-            <p className="text-sm text-[var(--muted)]">Final mix</p>
+            <p className="text-sm text-[var(--text-muted)]">Final mix</p>
             <a
               className="text-sm text-[var(--accent)]"
               href={`/api/audio/${episode.id}/episode.mp3`}
@@ -166,10 +166,10 @@ export function ReviewDesk({ episode: initial }: { episode: EpisodeRecord }) {
               setActiveOrder(order);
             }}
           />
-        </section>
+        </Surface>
       )}
 
-      <p className="mono mt-8 text-sm text-[var(--muted)]">
+      <p className="mono mt-8 text-sm text-[var(--text-muted)]">
         {episode.plan.lines
           .map((l) => {
             const s = episode.lineStatuses[l.order];
@@ -199,15 +199,15 @@ export function ReviewDesk({ episode: initial }: { episode: EpisodeRecord }) {
                   onboarding?.completeAction("line");
                 }
               }}
-              className={`cursor-pointer rounded-lg border bg-[var(--panel)] px-4 py-3 ${
+              className={`cursor-pointer rounded-lg border bg-[var(--surface)] px-4 py-3 ${
                 activeOrder === line.order
                   ? "border-[var(--accent)]"
-                  : "border-[var(--line)]"
+                  : "border-[var(--border)]"
               }`}
             >
               <div className="flex flex-wrap items-start justify-between gap-3">
                 <div className="min-w-0 flex-1">
-                  <p className="mono text-xs text-[var(--muted)]">
+                  <p className="mono text-xs text-[var(--text-muted)]">
                     {statusIcon(status)} {line.order} · {line.character}
                     {line.emotion ? ` · ${line.emotion}` : ""}
                   </p>
@@ -225,7 +225,8 @@ export function ReviewDesk({ episode: initial }: { episode: EpisodeRecord }) {
                       src={`/api/audio/${episode.id}/line_${String(line.order).padStart(3, "0")}.wav`}
                     />
                   )}
-                  <button
+                  <Button
+                    size="sm"
                     disabled={!!busy}
                     onClick={() => {
                       onboarding?.completeAction("qa");
@@ -235,32 +236,33 @@ export function ReviewDesk({ episode: initial }: { episode: EpisodeRecord }) {
                         `regen-${line.order}`,
                       );
                     }}
-                    className="rounded border border-[var(--line)] px-2 py-1 text-sm"
                   >
                     Regenerate
-                  </button>
-                  <button
+                  </Button>
+                  <Button
+                    size="sm"
                     disabled={!!busy}
+                    aria-pressed={status === "needs_regeneration"}
                     onClick={() => {
                       onboarding?.completeAction("qa");
                       void run(`/api/episodes/${episode.id}/lines/${line.order}`, {
                         status: "needs_regeneration",
                       });
                     }}
-                    className="rounded border border-[var(--line)] px-2 py-1 text-sm"
                   >
                     Flag
-                  </button>
-                  <button
+                  </Button>
+                  <Button
+                    size="sm"
                     disabled={!!busy}
+                    aria-pressed={status === "approved"}
                     onClick={() => {
                       onboarding?.completeAction("qa");
                       void run(`/api/episodes/${episode.id}/lines/${line.order}`, { status: "approved" });
                     }}
-                    className="rounded border border-[var(--ok)] px-2 py-1 text-sm text-[var(--ok)]"
                   >
                     Approve
-                  </button>
+                  </Button>
                 </div>
               </div>
             </li>

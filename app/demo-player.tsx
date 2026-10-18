@@ -22,7 +22,7 @@ export function OpenDeskLink({ href, children }: { href: string; children: React
     <Link
       href={href}
       data-tour="open-desk"
-      className="rounded-md bg-[var(--accent)] px-3 py-2 text-sm text-black"
+      className="rounded-[var(--radius-sm)] bg-[var(--accent)] px-4 py-2 text-sm font-medium text-[var(--accent-contrast)]"
       onClick={() => onboarding?.completeAction("open-desk")}
     >
       {children}
