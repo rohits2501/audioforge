@@ -1,0 +1,7 @@
+{
+  "routes": [
+    { "path": "/", "baselineBytes": 111809, "maxBytes": 120832 },
+    { "path": "/_not-found", "baselineBytes": 103532, "maxBytes": 112640 },
+    { "path": "/review/[episodeId]", "baselineBytes": 110253, "maxBytes": 118784 }
+  ]
+}

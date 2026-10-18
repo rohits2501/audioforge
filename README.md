@@ -82,6 +82,7 @@ Default routing (not intelligent): Indic languages → Sarvam `bulbul:v3`. Engli
 | `npm run sfx:init` | Write the 12 local SFX clips |
 | `npm run mix -- <episodeId>` | Remix an existing episode |
 | `npm run benchmark -- fixtures/scripts/tier1-five-minute.txt` | Produce B vs C + comparison sheet |
+| `npm run perf:budget` | Check gzipped first-load JS against [`docs/perf/budgets.md`](docs/perf/budgets.md) |
 | `npm run dev` | Review UI — Create Hindi episode |
 
 ## Stack (grows only when the audio works)
