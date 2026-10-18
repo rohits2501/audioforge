@@ -99,7 +99,7 @@ export function CreateEpisodeForm() {
               value={script}
               onChange={(e) => setScript(e.target.value)}
               rows={16}
-              className="w-full rounded-[var(--radius-sm)] border border-[var(--border-strong)] bg-[var(--surface)] px-3 py-2 font-mono text-sm text-[var(--text)]"
+              className="w-full rounded-[var(--radius-md)] border border-[var(--border-strong)] bg-[var(--surface)] px-3 py-2 font-mono text-sm text-[var(--text)]"
             />
           </Stack>
         </Stack>
