@@ -1,5 +1,6 @@
 "use client";
 
+import { Button, IconButton, Surface } from "@house/react";
 import { StepBadge } from "./badge";
 import { useOnboarding } from "./provider";
 import { formatKn } from "./steps";
@@ -15,32 +16,26 @@ export function OnboardingPopup() {
       <button
         type="button"
         aria-label="Dismiss"
-        className="absolute inset-0 bg-black/60"
+        className="absolute inset-0 bg-[var(--scrim)]"
         onClick={pause}
       />
-      <div className="relative w-full max-w-md rounded-lg border border-[var(--line)] bg-[var(--panel)] p-6 shadow-xl">
+      <Surface raised padding={6} className="relative w-full max-w-md">
         <div className="flex items-center justify-between gap-3">
           <StepBadge index={index} total={total} />
-          <button type="button" onClick={pause} className="text-sm text-[var(--muted)]">
-            ×
-          </button>
+          <IconButton size="sm" label="Pause tour" icon="×" onClick={pause} />
         </div>
         <h2 className="mt-4 text-2xl">{step.title}</h2>
-        <p className="mt-2 text-[var(--muted)]">{step.body}</p>
+        <p className="mt-2 text-[var(--text-muted)]">{step.body}</p>
         <div className="mt-6 flex flex-wrap items-center justify-between gap-3">
-          <button type="button" onClick={skip} className="text-sm text-[var(--muted)]">
+          <button type="button" onClick={skip} className="text-sm text-[var(--text-muted)]">
             Skip
           </button>
-          <button
-            type="button"
-            onClick={next}
-            className="rounded-md bg-[var(--accent)] px-4 py-2 text-black"
-          >
+          <Button variant="primary" onClick={next}>
             {finish ? "Finish" : "Start"}
-          </button>
+          </Button>
         </div>
-        <p className="mono mt-4 text-xs text-[var(--muted)]">{formatKn(index, total)}</p>
-      </div>
+        <p className="mono mt-4 text-xs text-[var(--text-muted)]">{formatKn(index, total)}</p>
+      </Surface>
     </div>
   );
 }

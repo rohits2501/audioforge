@@ -1,14 +1,9 @@
 @import "tailwindcss";
 
-/* Old names, aliased onto @house/tokens roles until each screen moves to the package names. */
+/* Colors come from @house/tokens. AudioForge keeps its editorial serif. */
 :root {
-  --panel: var(--surface);
-  --line: var(--border);
-  --muted: var(--text-muted);
-  --ok: var(--success);
-  --warn: var(--warning);
-  --bad: var(--danger);
   --font-sans: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+  --scrim: color-mix(in srgb, var(--bg) 72%, transparent);
 }
 
 html,
