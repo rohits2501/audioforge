@@ -15,7 +15,7 @@
     "sfx:init": "tsx scripts/generate-sfx.ts",
     "mix": "tsx scripts/mix-episode.ts",
     "benchmark": "tsx scripts/benchmark.ts",
-    "test": "node --test scripts/bundle-budget.test.mjs",
+    "test": "node --test scripts/bundle-budget.test.mjs scripts/perf-comment.test.mjs",
     "perf:budget": "node scripts/check-bundle-budget.mjs",
     "postbuild": "node scripts/check-bundle-budget.mjs",
     "test:parser": "tsx scripts/test-parser.ts",
