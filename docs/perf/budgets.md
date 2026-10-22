@@ -20,6 +20,12 @@ LCP 2500 ms, INP 200 ms, CLS 0.1. These are the Core Web Vitals "good" threshold
 
 The production-labor benchmark (human minutes per finished audio minute) is a different number. It lives in [benchmark.md](../benchmark.md).
 
+## Pull request comment
+
+CI writes `perf/snapshot.json` after the production build: parsed bytes and level-9 gzip for each budgeted route. A sticky comment, `<!-- perf-budget -->`, diffs that file against the snapshot from the last successful build on `main`. `baselineBytes` is not the diff. A growth of at least 100 B or 1% is marked. The comment does not fail the build. The gzip ceiling still does. Raise `maxBytes` in the same change that grows a page.
+
+There is no browser bench in CI. The production-labor benchmark is human minutes, and a lab paint time would move with the machine.
+
 ## Commands
 
 ```bash
